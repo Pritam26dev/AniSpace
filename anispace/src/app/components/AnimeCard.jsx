@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function AnimeCard({id, title, image, rating }) {
   return (
-    <Link href={`anime/${id}`}>
+    <Link href={`/anime/${id}`}>
 
       <Image
         src={image}
