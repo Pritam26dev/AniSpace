@@ -1,8 +1,9 @@
+import Link from 'next/link';
 import Image from 'next/image';
 
-export default function AnimeCard({ title, image, rating }) {
+export default function AnimeCard({id, title, image, rating }) {
   return (
-    <div className="w-[250px] bg-[#14141c] rounded-xl overflow-hidden">
+    <Link href={`anime/${id}`}>
 
       <Image
         src={image}
@@ -24,6 +25,6 @@ export default function AnimeCard({ title, image, rating }) {
 
       </div>
 
-    </div>
+    </Link>
   );
 }
