@@ -34,7 +34,7 @@ export default async function AnimeDetails({ params }) {
   alt={anime.title}
   width={300}
   height={450}
-  className="rounded-xl"
+  className="h-auto rounded-xl"
 />
 
         <div className="flex flex-col justify-center">

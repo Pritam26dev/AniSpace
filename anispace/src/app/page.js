@@ -12,7 +12,20 @@ export default function Home() {
   const [airingAnime, setAiringAnime] = useState([]);
   const [upcomingAnime, setUpcomingAnime] = useState([]);
 
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const filteredTrending = trendingAnime.filter((anime) =>
+    anime.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredAiring = airingAnime.filter((anime) =>
+    anime.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredUpcoming = upcomingAnime.filter((anime) =>
+    anime.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   useEffect(() => {
     const fetchAnime = async () => {
@@ -55,22 +68,65 @@ export default function Home() {
         </div>
       )}
 
+      <div className="px-8 mt-8">
+        <input
+          type="text"
+          placeholder="Search Naruto, One Piece, Attack on Titan..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full p-4 rounded-xl bg-zinc-800 border border-zinc-700 focus:outline-none focus:border-blue-500"
+        />
+
+        {search && (
+          <>
+            <p className="text-gray-400 mt-3">
+              Searching for: "{search}"
+            </p>
+
+            <p className="text-gray-400 mt-2">
+              Trending Results: {filteredTrending.length}
+            </p>
+
+            <button 
+            onClick={()=>setSearch("")}
+            className="mt-3 px-4 py-2 bg-zinc-700 rounded-lg"
+            >
+              Clear Search
+            </button>
+
+            {filteredTrending.length === 0 &&
+              filteredAiring.length === 0 &&
+              filteredUpcoming.length === 0 && (
+                <p className="text-red-400 mt-2">
+                  No matching anime found.
+                </p>
+              )}
+          </>
+        )}
+      </div>
+
       {!loading && (
         <>
-          <AnimeRow
-            title="Trending Anime"
-            animeData={trendingAnime}
-          />
+          {filteredTrending.length > 0 && (
+            <AnimeRow
+              title="Trending Anime"
+              animeData={filteredTrending}
+            />
+          )}
 
-          <AnimeRow
-            title="Currently Airing"
-            animeData={airingAnime}
-          />
+          {filteredAiring.length > 0 && (
+            <AnimeRow
+              title="Currently Airing"
+              animeData={filteredAiring}
+            />
+          )}
 
-          <AnimeRow
-            title="Upcoming Anime"
-            animeData={upcomingAnime}
-          />
+          {filteredUpcoming.length > 0 && (
+            <AnimeRow
+              title="Upcoming Anime"
+              animeData={filteredUpcoming}
+            />
+          )}
         </>
       )}
     </main>
