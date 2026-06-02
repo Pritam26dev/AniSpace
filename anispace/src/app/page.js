@@ -13,6 +13,8 @@ export default function Home() {
   const [upcomingAnime, setUpcomingAnime] = useState([]);
 
   const [search, setSearch] = useState("");
+  const [watchlist, setWatchlist] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   const filteredTrending = trendingAnime.filter((anime) =>
@@ -56,7 +58,6 @@ export default function Home() {
   return (
     <main>
       <Navbar />
-
       <Hero />
 
       {loading && (
@@ -71,62 +72,35 @@ export default function Home() {
       <div className="px-8 mt-8">
         <input
           type="text"
-          placeholder="Search Naruto, One Piece, Attack on Titan..."
+          placeholder="Search anime..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-4 rounded-xl bg-zinc-800 border border-zinc-700 focus:outline-none focus:border-blue-500"
+          className="w-full p-4 rounded-xl bg-zinc-800 border border-zinc-700"
         />
-
-        {search && (
-          <>
-            <p className="text-gray-400 mt-3">
-              Searching for: "{search}"
-            </p>
-
-            <p className="text-gray-400 mt-2">
-              Trending Results: {filteredTrending.length}
-            </p>
-
-            <button 
-            onClick={()=>setSearch("")}
-            className="mt-3 px-4 py-2 bg-zinc-700 rounded-lg"
-            >
-              Clear Search
-            </button>
-
-            {filteredTrending.length === 0 &&
-              filteredAiring.length === 0 &&
-              filteredUpcoming.length === 0 && (
-                <p className="text-red-400 mt-2">
-                  No matching anime found.
-                </p>
-              )}
-          </>
-        )}
       </div>
 
       {!loading && (
         <>
-          {filteredTrending.length > 0 && (
-            <AnimeRow
-              title="Trending Anime"
-              animeData={filteredTrending}
-            />
-          )}
+          <AnimeRow
+            title="Trending Anime"
+            animeData={filteredTrending}
+            watchlist={watchlist}
+            setWatchlist={setWatchlist}
+          />
 
-          {filteredAiring.length > 0 && (
-            <AnimeRow
-              title="Currently Airing"
-              animeData={filteredAiring}
-            />
-          )}
+          <AnimeRow
+            title="Currently Airing"
+            animeData={filteredAiring}
+            watchlist={watchlist}
+            setWatchlist={setWatchlist}
+          />
 
-          {filteredUpcoming.length > 0 && (
-            <AnimeRow
-              title="Upcoming Anime"
-              animeData={filteredUpcoming}
-            />
-          )}
+          <AnimeRow
+            title="Upcoming Anime"
+            animeData={filteredUpcoming}
+            watchlist={watchlist}
+            setWatchlist={setWatchlist}
+          />
         </>
       )}
     </main>

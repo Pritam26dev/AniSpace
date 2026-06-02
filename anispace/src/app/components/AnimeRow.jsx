@@ -1,7 +1,7 @@
 import AnimeCard from "./AnimeCard"
 
 
-export default function AnimeRow({title,animeData}){
+export default function AnimeRow({title,animeData,watchlist,setWatchlist}){
     return(
         <section className="px-8 mt-16">
 
@@ -19,6 +19,8 @@ export default function AnimeRow({title,animeData}){
               title={anime.title}
               image={anime.images.jpg.image_url}
               rating={anime.score}
+                watchlist={watchlist}
+                setWatchlist={setWatchlist}
             />
           ))}
 
