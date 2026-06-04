@@ -14,6 +14,7 @@ export default function Home() {
 
   const [search, setSearch] = useState("");
   const [watchlist, setWatchlist] = useState([]);
+  console.log("current watchlist:",watchlist)
 
   const [loading, setLoading] = useState(true);
 
@@ -55,10 +56,19 @@ export default function Home() {
     fetchAnime();
   }, []);
 
+
   return (
     <main>
       <Navbar />
       <Hero />
+
+      <button 
+      onClick={()=>{
+        localStorage.setItem("test","Anispace")
+      }}
+      className="bg-blue-500 px-4 py-2 rounded-lg mx=8 mt-4">
+        Save Test
+        </button>
 
       {loading && (
         <div className="flex gap-6 overflow-x-auto pb-4 px-8 mt-16">
