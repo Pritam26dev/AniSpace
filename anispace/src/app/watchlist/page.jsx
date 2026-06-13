@@ -1,84 +1,80 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar  from "../components/Navbar";
+import Navbar from "../components/Navbar";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function WatchlistPage() {
   const [watchlist, setWatchlist] = useState([]);
 
   useEffect(() => {
-    const savedWatchlist = localStorage.getItem("watchlist");
-
-    if (savedWatchlist) {
-      setWatchlist(JSON.parse(savedWatchlist));
-    }
+    const saved = localStorage.getItem("watchlist");
+    if (saved) setWatchlist(JSON.parse(saved));
   }, []);
 
   const handleRemove = (id) => {
-    const updatedWatchlist = watchlist.filter(
-      (anime) => anime.id !== id
-    );
-
-    setWatchlist(updatedWatchlist);
-
-    localStorage.setItem(
-      "watchlist",
-      JSON.stringify(updatedWatchlist)
-    );
+    const updated = watchlist.filter((anime) => anime.id !== id);
+    setWatchlist(updated);
+    localStorage.setItem("watchlist", JSON.stringify(updated));
   };
 
   return (
     <>
-    <Navbar/>
+      <Navbar />
+      <main className="min-h-screen bg-[#0a0a12] text-white px-10 py-10">
+        <h1 className="text-4xl font-bold tracking-tight mb-2">My Watchlist</h1>
+        <p className="text-slate-500 text-sm mb-10">{watchlist.length} anime saved</p>
 
-    <main className="p-8">
-      <h1 className="text-4xl font-bold mb-8">
-        My Watchlist
-      </h1>
-
-      <div className="flex flex-col gap-6">
         {watchlist.length === 0 ? (
-          <div className="text-center mt-20">
-            <p className="text-gray-400 text-lg">
-              No anime added yet.
-            </p>
+          <div className="flex flex-col items-center justify-center mt-32 gap-4">
+            <p className="text-5xl">🎌</p>
+            <p className="text-slate-400 text-lg font-medium">Your watchlist is empty</p>
+            <p className="text-slate-600 text-sm">Go add some anime you want to watch</p>
+            <Link
+              href="/"
+              className="mt-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+            >
+              Browse Anime
+            </Link>
           </div>
         ) : (
-          watchlist.map((anime) => (
-            <div
-              key={anime.id}
-              className="bg-[#14141c] rounded-xl p-4 flex gap-6 items-center"
-            >
-              <div className="w-[120px] h-[170px] bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0">
-                <img
-                  src={anime.image}
-                  alt={anime.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="flex-1">
-                <h2 className="font-semibold text-2xl">
-                  {anime.title}
-                </h2>
-
-                <p className="text-gray-400 mt-2">
-                  ⭐ {anime.rating}
-                </p>
-
-                
-              </div>
-
-              <button
-                onClick={() => handleRemove(anime.id)}
-                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition"
+          <div className="flex flex-col gap-4">
+            {watchlist.map((anime) => (
+              <div
+                key={anime.id}
+                className="bg-[#0f0f1a] border border-purple-900/20 hover:border-purple-900/40 rounded-2xl p-4 flex gap-6 items-center transition-colors"
               >
-                Remove
-              </button>
-            </div>
-          ))
+                <Link href={`/anime/${anime.id}`} className="flex-shrink-0">
+                  <div className="relative w-[90px] h-[130px] rounded-xl overflow-hidden">
+                    <Image
+                      src={anime.image}
+                      alt={anime.title}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </Link>
+
+                <div className="flex-1">
+                  <Link href={`/anime/${anime.id}`}>
+                    <h2 className="text-lg font-semibold text-white hover:text-purple-400 transition-colors">
+                      {anime.title}
+                    </h2>
+                  </Link>
+                  <p className="text-slate-500 text-sm mt-1">⭐ {anime.rating ?? "N/A"}</p>
+                </div>
+
+                <button
+                  onClick={() => handleRemove(anime.id)}
+                  className="border border-red-900/30 hover:border-red-600/50 hover:bg-red-900/20 text-red-400 px-5 py-2 rounded-xl text-sm font-semibold transition-all"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
         )}
-      </div>
-    </main>
+      </main>
     </>
   );
 }
